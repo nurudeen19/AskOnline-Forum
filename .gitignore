@@ -19,3 +19,6 @@ venv.bak/
 #tempates
 AskOnline
 
+#others
+.phpintel/
+
