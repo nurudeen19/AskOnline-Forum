@@ -1,0 +1,30 @@
+{% extends 'auth.html.j2' %}
+
+{% block 'title'%}Sign Up{% endblock %} 
+{% block 'section-title'%} Sign Up {% endblock %}
+{% block 'section-title-description'%}
+  Hello there, Register Form 
+{% endblock %}
+{% block 'content' %} 
+  
+  <form method="POST" action="{% url 'register' %}">
+    {% csrf_token %}
+    {{ form }}
+    <div class="col-md-4">
+      <div class="row text-center sign-with">
+        <div class="col-md-12">
+          <h3> Sign in with</h3>
+        </div>
+        <div class="col-md-12 sign-in28912">
+          <div class="btn-group btn-group-justified">
+            <a href="#" class="btn btn-primary btn-primary3838">Facebook</a> 
+            <a href="#" class="btn btn-danger btn-danger37883">Google</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="text-center">
+      <input class="button" type="submit" value="Sign Up"/>
+    </div>
+  </form>
+{% endblock %}
