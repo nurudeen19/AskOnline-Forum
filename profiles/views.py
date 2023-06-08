@@ -3,11 +3,13 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from .forms import CustomUserForm
 from django.contrib.auth import authenticate
+from posts.models import Post
 
 
-@login_required
+@login_required(login_url='/account/login')
 def home(request):
-	return render(request, 'home.html.j2',{})
+	posts = Post.objects.filter(user =request.user)
+	return render(request, 'home.html.j2',{'posts': posts})
 
 	
 def register(request):

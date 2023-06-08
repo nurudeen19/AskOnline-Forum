@@ -2016,7 +2016,7 @@ h5:hover {
     -webkit-transition: color 0.3s ease;
     -o-transition: color 0.3s ease;
     transition: color 0.3s ease;
-    display: none;
+/*    display: none;*/
 }
 
 .comment-box .comment-head i:hover {

@@ -26,6 +26,8 @@ class Post(models.Model):
 	slug = models.SlugField()
 	description = models.TextField()
 	image = models.FileField(null=True,upload_to='posts/')
+	created_at = models.DateTimeField(auto_now_add=True)
+	updated_at = models.DateTimeField(auto_now=True)
 
 
 	#auto add slug field
@@ -39,3 +41,5 @@ class Comment(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
 	post = models.ForeignKey(Post, on_delete= models.CASCADE, default=None)
 	parent= models.ForeignKey("Comment", on_delete=models.CASCADE, null=True)
+	created_at = models.DateTimeField(auto_now_add=True)
+	updated_at = models.DateTimeField(auto_now=True)
