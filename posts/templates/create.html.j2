@@ -21,7 +21,7 @@
 	<div class="ask-question-input-part032">
     <h4>Ask Question</h4>
 		<hr>
-		<form method="POST" action="{% url 'post.create' %}">
+		<form method="POST" action="{% url 'post.create' %}"  enctype="multipart/form-data">
 			{% csrf_token %}
 			<div class="question-title39">
 				<span class="form-description433">Question-Title* </span><input type="text" name="title" class="question-ttile32" placeholder="Write Your Question Title" required>
@@ -35,9 +35,9 @@
 					{% endfor %}
 				</select>
 			</div>
-				<!-- <div class="button-group-addfile3239">
-				<span class="form-description23993">Attactment*</span><input type="file" name="ffile" class="question-ttile3226">      
-				</div> -->
+			<div class="button-group-addfile3239">
+				<span class="form-description23993">Attactment*</span><input type="file" name="image" class="question-ttile3226">      
+			</div> 
 			<div class="details2-239">
 				<div class="col-md-12 nopadding">
 					<textarea id="summernote" name="description" required></textarea> 
@@ -54,7 +54,11 @@
   <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 	<script>
 	$(document).ready(function() {
-		$("#summernote").Editor();
+		$("#summernote").summernote({
+        placeholder: 'Details here',
+        tabsize: 2,
+        height: 250
+      });
 	});
 </script>
 {% endblock %}

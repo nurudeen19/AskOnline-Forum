@@ -8,12 +8,13 @@ from posts.forms import PostForm
 def index(request):
 	return render(request,'index.html.j2',{})
 
-@login_required
+@login_required(login_url='/account/login')
 def create(request):
-	form = PostForm(request.POST or None)
+	form = PostForm(request.POST, request.FILES)
 	if form.is_valid():
 		form.save(commit=False).user = request.user
 		form.save()
+		messages.success(request, 'Post published successfully!') 
 		return redirect('home')
 	categories = Category.objects.all()
 	return render(request,'create.html.j2',{'categories':categories})

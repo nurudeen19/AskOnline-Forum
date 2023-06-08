@@ -15,6 +15,7 @@
     <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'css/animate.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/toastr.min.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet" type="text/css"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
    {% block 'css' %} {% endblock %}
@@ -352,7 +353,14 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
-    
+    <script src="{% static 'js/toastr.min.js' %}"></script>
+    <script>
+      {% if messages %}
+        {% for msg in messages %}
+          toastr.success('{{msg}}')
+        {% endfor %}
+      {% endif %}
+    </script>
     {% block 'js' %} {% endblock %}
   </body>
 </html>

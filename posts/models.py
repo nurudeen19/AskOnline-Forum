@@ -25,6 +25,7 @@ class Post(models.Model):
 	title = models.CharField(max_length=255)
 	slug = models.SlugField()
 	description = models.TextField()
+	image = models.FileField(null=True,upload_to='posts/')
 
 
 	#auto add slug field
