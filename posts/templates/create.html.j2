@@ -1,0 +1,60 @@
+{% extends 'base.html.j2' %}
+{% load static %}
+
+{% block 'css' %}
+	<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block 'breadcrumb'%}
+	<section class="header-descriptin329">
+      <div class="container">
+        <h3>Ask Question</h3>
+        <ol class="breadcrumb breadcrumb839">
+          <li><a href="#">Home</a></li>
+          <li class="active">Ask Question</li>
+        </ol>
+      </div>
+    </section>
+{% endblock %}
+
+{% block 'content' %}
+	<div class="ask-question-input-part032">
+    <h4>Ask Question</h4>
+		<hr>
+		<form method="POST" action="{% url 'post.create' %}">
+			{% csrf_token %}
+			<div class="question-title39">
+				<span class="form-description433">Question-Title* </span><input type="text" name="title" class="question-ttile32" placeholder="Write Your Question Title" required>
+			</div>                        
+			<div class="categori49">
+				<label class="form-description43305">Category* </label>
+				<select name="category" class="list-category53" required>
+				<option value="" selected>Select Question Category</option>
+					{% for c in categories %}
+						<option value="{{c.id}}">{{ c.name }} </option>
+					{% endfor %}
+				</select>
+			</div>
+				<!-- <div class="button-group-addfile3239">
+				<span class="form-description23993">Attactment*</span><input type="file" name="ffile" class="question-ttile3226">      
+				</div> -->
+			<div class="details2-239">
+				<div class="col-md-12 nopadding">
+					<textarea id="summernote" name="description" required></textarea> 
+				</div>
+			</div>
+			<div class="publish-button2389">
+		    <button type="submit" class="publis1291">Publish your Question</button>
+			</div>                    
+		</form>
+	</div>
+{% endblock %}
+
+{% block 'js' %}   
+  <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+	<script>
+	$(document).ready(function() {
+		$("#summernote").Editor();
+	});
+</script>
+{% endblock %}
