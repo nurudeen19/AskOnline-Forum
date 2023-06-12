@@ -22,7 +22,7 @@ def create(request):
 
 def show(request,slug):
 	post = Post.objects.filter(slug=slug).get()
-	comments = Comment.objects.filter(post=post)
+	comments = Comment.objects.filter(post=post,parent=None)
 	return render(request, 'show.html.j2', {
 		'post':post,
 		'comments':comments
@@ -32,7 +32,19 @@ def show(request,slug):
 def comment(request,slug):
 	if request.method == "POST":
 		form = CommentForm(request.POST or None)
-		if form.is_valid():
+		if form.is_valid():			
+			if request.POST.get("parent"):
+				#todo
+				comment =	Comment.objects.get(pk=request.POST.get("parent"))		
+				form.save(commit=False).parent = comment
 			form.save()
 			messages.success(request, "Comment added successfully")
 			return redirect(request.GET["next"])
+
+
+def delete_comment(request,slug,comment_id):
+	comment = Comment.objects.get(pk=comment_id)
+	comment.delete()
+	messages.success(request, "Comment Removed successfully!")
+	return redirect(request.GET["next"])
+

@@ -83,49 +83,75 @@
                 <!-- Contenedor del Comentario -->
                 <div class="comment-box">
                   <div class="comment-head">
-                    <h6 class="comment-name"><a href="#">{{comment.user.get_full_name}}</a></h6> <span><i class="fa fa-clock-o" aria-hidden="false"> {{ comment.created_at|naturaltime}}</i></span> <i class="fa fa-reply"></i> <i class="fa fa-heart"></i> 
+                    <h6 class="comment-name"><a href="#">{{comment.user.get_full_name}}</a></h6> <span><i class="fa fa-clock-o" aria-hidden="false"> {{ comment.created_at|naturaltime}}</i></span> <i class="fa fa-reply" data-toggle="modal" data-target="#replyModal-{{comment.id}}"></i> <i class="fa fa-heart"></i>
                   </div>
                   <div class="comment-content">
                    	{{ comment.description|safe }}
+                    <div class="float-right">
+                      {% if comment.user.id == user.id %}
+                        <a class="color-pink" href="{%url 'post.comment.delete' slug=post.slug comment_id=comment.id %}?next={{ request.path|urlencode }}"><i class="fa fa-trash"></i> </a>
+                      {% endif %}
+                    </div>
                   </div>
                 </div>
               </div>
-              <!-- <ul class="comments-list reply-list">
+              <!-- Modal -->
+              <div class="modal fade" id="replyModal-{{comment.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Reply to Comment</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <form method="POST" action="{% url 'post.comment' post.slug %}?next={{ request.path|urlencode }}">
+                        {% csrf_token %}
+                        <input type="hidden" name="post" value="{{post.id}}">
+                        <input type="hidden" name="user" value="{{user.id}}">
+                        <input type="hidden" name="parent" value="{{comment.id}}">
+                        <div class="row">
+                          <div class="col-md-12" style="margin-bottom: 30px;">
+                            <div class="post9320-box">
+                              <textarea  class="comment-input219882 summernote" name="description" required></textarea>
+                            </div>
+                            <button type="submit" class="pos393-submit">Reply To Comment</button>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% if comment.children %}
+              <ul class="comments-list reply-list">
+                {% for child in comment.children %}
                 <li>
-                  <div class="comment-avatar"><img src="image/images.png" alt=""></div>
+                  <div class="comment-avatar"><img src="{%static 'image/images.png' %}" alt=""></div>
                   <div class="comment-box">
                     <div class="comment-head">
                       <h6 class="comment-name">
-                      	<a href="#">Lorena Rojero</a>
+                      	<a href="#">{{child.user.get_full_name}}</a>
                       </h6> 
                       <span>
-                      	<i class="fa fa-clock-o" aria-hidden="true"> January 15 , 2014 at 10:00 pm</i>
+                      	<i class="fa fa-clock-o" aria-hidden="true"> {{child.created_at|naturaltime}}</i>
                       </span> 
-                      <i class="fa fa-reply"></i>
                       <i class="fa fa-heart"></i> 
                     </div>
                     <div class="comment-content">
-                    	Lorem ipsum dolor sit amet, consectetur adipisicing elit. Velit omnis animi et iure laudantium vitae, praesentium optio, sapiente distinctio illo? 
+                    	{{child.description|safe}}
+                    </div>
+                    <div class="float-right">
+                      {% if comment.user.id == user.id %}
+                        <a class="color-pink" href="{%url 'post.comment.delete' slug=post.slug comment_id=comment.id %}?next={{ request.path|urlencode }}"><i class="fa fa-trash"></i> </a>
+                      {% endif %}
                     </div>
                   </div>
                 </li>
-                <li>
-                  <div class="comment-avatar"><img src="image/images.png" alt=""></div>
-                  <div class="comment-box">
-                      <div class="comment-head">
-                          <h6 class="comment-name by-author"><a href="#">Agustin Ortiz</a></h6> <span><i class="fa fa-clock-o" aria-hidden="true"> January 15 , 2014 at 10:00 pm</i></span> <i class="fa fa-reply"></i> <i class="fa fa-heart"></i> </div>
-                      <div class="comment-content"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Velit omnis animi et iure laudantium vitae, praesentium optio, sapiente distinctio illo? </div>
-                  </div>
-                </li>
-                <li>
-                    <div class="comment-avatar"><img src="image/images.png" alt=""></div>
-                    <div class="comment-box">
-                        <div class="comment-head">
-                            <h6 class="comment-name"><a href="#">Lorena Rojero</a></h6> <span><i class="fa fa-clock-o" aria-hidden="true"> January 15 , 2014 at 10:00 pm</i></span> <i class="fa fa-reply"></i> <i class="fa fa-heart"></i> </div>
-                        <div class="comment-content"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Velit omnis animi et iure laudantium vitae, praesentium optio, sapiente distinctio illo? </div>
-                    </div>
-                </li>
-              </ul> -->
+                {% endfor %}
+              </ul>
+              {% endif %}
             </li>
           {% endfor %}
           </ul>
@@ -143,7 +169,7 @@
 	    <div class="row">
 	      <div class="col-md-12" style="margin-bottom: 30px;">
 	        <div class="post9320-box">
-	        	<textarea  class="comment-input219882" id="summernote" name="description" required></textarea>
+	        	<textarea  class="comment-input219882 summernote" name="description" required></textarea>
 	        </div>
 	        <button type="submit" class="pos393-submit">Post Your Answer</button>
 	      </div>
@@ -156,7 +182,7 @@
   <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 	<script>
 	$(document).ready(function() {
-		$("#summernote").summernote({
+		$(".summernote").summernote({
         placeholder: 'Details here',
         tabsize: 2,
         height: 250

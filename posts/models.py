@@ -32,7 +32,7 @@ class Post(models.Model):
 
 	#auto add slug field
 	def save(self, *args, **kwargs):
-		self.slug = slugify(self.title)
+		self.slug = unique_slugify(self, self.title)
 		super(Post, self).save(*args, **kwargs)
 
 
@@ -43,3 +43,10 @@ class Comment(models.Model):
 	parent= models.ForeignKey("Comment", on_delete=models.CASCADE, null=True)
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
+
+
+	def children(self):
+		return Comment.objects.filter(parent=self)
+
+	# def get_author(self):
+	# 	return self.user.get_full_name

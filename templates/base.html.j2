@@ -18,6 +18,11 @@
     <link href="{% static 'css/toastr.min.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet" type="text/css"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <style type="text/css">
+      .color-pink{
+        color:#fd6372 !important;
+      }
+    </style>
    {% block 'css' %} {% endblock %}
   </head>
 
@@ -111,6 +116,8 @@
             {% block 'content' %}
             {% endblock %}
           </div> 
+          <!-- Button trigger modal -->
+
           <!-- end of col-md-9 -->
           <!-- strart col-md-3 (side bar)-->
           <div class="col-md-3 mb-5">
@@ -358,6 +365,11 @@
       {% if messages %}
         {% for msg in messages %}
           toastr.success('{{msg}}')
+        {% endfor %}
+      {% endif %}
+      {% if form.errors %}
+        {% for error in form.errors %}
+          toastr.error('{{error}}')
         {% endfor %}
       {% endif %}
     </script>
