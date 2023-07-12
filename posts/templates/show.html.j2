@@ -29,7 +29,11 @@
           </div>
         </div>
         <div class="col-md-4">
-          <div class="post-que-rep-rihght320"> <a href="#"><i class="fa fa-question-circle" aria-hidden="true"></i> Question</a> <a href="#" class="r-clor10">Report</a> </div>
+          <div class="post-que-rep-rihght320"> <a href="#"><i class="fa fa-question-circle" aria-hidden="true"></i> Question</a> <a href="#" class="r-clor10">Report</a> 
+          {% if post.user == user %}
+          <a href="#" class="r-clor10">Edit</a>
+          `{% endif %}
+          </div>
         </div>
       </div>
     </div>
@@ -37,9 +41,14 @@
       <p>
       	{{ post.description|safe }}
       </p>
+      {% if post.image %}
+        <div style="margin-bottom: 20px;">
+          <img src="{{post.image.url}}" alt="image">
+        </div>
+      {% endif %}
       <hr>
       <div class="post-footer29032">
-        <div class="l-side2023"> <i class="fa fa-check check2" aria-hidden="true"> solved</i> <a href="#"><i class="fa fa-star star2" aria-hidden="true">  5</i></a> <i class="fa fa-folder folder2" aria-hidden="true"> wordpress</i> <i class="fa fa-clock-o clock2" aria-hidden="true"> 4 min ago</i> <a href="#"><i class="fa fa-commenting commenting2" aria-hidden="true"> 5 answer</i></a> <i class="fa fa-user user2" aria-hidden="true"> 70 views</i> </div>
+        <div class="l-side2023"> <i class="fa fa-check check2" aria-hidden="true"> solved</i> <a href="#"><i class="fa fa-star star2" aria-hidden="true">  5</i></a> <i class="fa fa-folder folder2" aria-hidden="true"> wordpress</i> <i class="fa fa-clock-o clock2" aria-hidden="true"> {{post.created_at|naturaltime}}</i> <a href="#"><i class="fa fa-commenting commenting2" aria-hidden="true"> {{comments.count}} answers</i></a> <i class="fa fa-user user2" aria-hidden="true"> 70 views</i> </div>
         <div class="l-rightside39">
           <button type="button" class="tolltip-button thumbs-up2" data-toggle="tooltip" data-placement="bottom" title="Like"><i class="fa fa-thumbs-o-up " aria-hidden="true"></i></button>
           <button type="button" class="tolltip-button  thumbs-down2" data-toggle="tooltip" data-placement="bottom" title="Dislike"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i></button> <span class="single-question-vote-result">+22</span>
@@ -83,7 +92,10 @@
                 <!-- Contenedor del Comentario -->
                 <div class="comment-box">
                   <div class="comment-head">
-                    <h6 class="comment-name"><a href="#">{{comment.user.get_full_name}}</a></h6> <span><i class="fa fa-clock-o" aria-hidden="false"> {{ comment.created_at|naturaltime}}</i></span> <i class="fa fa-reply" data-toggle="modal" data-target="#replyModal-{{comment.id}}"></i> <i class="fa fa-heart"></i>
+                    <h6 class="comment-name"><a href="#">{{comment.user.get_full_name}}</a></h6> <span><i class="fa fa-clock-o" aria-hidden="false"> {{ comment.created_at|naturaltime}}</i></span> 
+                    {% if user.is_authenticated %}
+                      <i class="fa fa-reply" data-toggle="modal" data-target="#replyModal-{{comment.id}}"></i> <i class="fa fa-heart"></i>
+                    {% endif %}
                   </div>
                   <div class="comment-content">
                    	{{ comment.description|safe }}
@@ -162,6 +174,7 @@
   <div class="comment289-box">
     <h3>Leave A Reply</h3>
     <hr>
+    {% if user.is_authenticated %}
     <form method="POST" action="{% url 'post.comment' post.slug %}?next={{ request.path|urlencode }}">
    		{% csrf_token %}
    		<input type="hidden" name="post" value="{{post.id}}">
@@ -175,6 +188,11 @@
 	      </div>
 	    </div>
 	  </form>
+    {% else %}
+      <p class="">
+        Please login to post a comment!!!
+      </p>
+    {% endif %}
   </div>
 {% endblock %}
 

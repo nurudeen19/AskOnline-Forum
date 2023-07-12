@@ -3,10 +3,14 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from posts.models import Category, Post, Comment
 from posts.forms import PostForm,CommentForm
+from django.core.paginator import Paginator
 
 
 def index(request):
 	posts = Post.objects.all()
+	paginator = Paginator(posts,10)
+	page = request.GET.get('page')
+	posts = paginator.get_page(page)
 	return render(request,'index.html.j2',{'posts': posts})
 
 @login_required(login_url='/account/login')
@@ -27,6 +31,16 @@ def show(request,slug):
 		'post':post,
 		'comments':comments
 	})
+
+def edit(request,slug):
+	form = PostForm()
+
+
+def delete(request, post_id):
+	post = Post.objects.get(pk=post_id)
+	post.delete()
+	messages.success(request, "Post Removed Successfully!")
+	return redirect('home')
 
 
 def comment(request,slug):

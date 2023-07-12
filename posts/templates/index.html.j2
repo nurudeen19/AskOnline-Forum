@@ -15,13 +15,13 @@
           <a href="#">
             <button type="button" class="aboutus022">About Us</button>
           </a>
-          <a href="#">
+          <a href="{% url 'register'%}">
             <button type="button" class="join92">Join Now</button>
           </a>
         </div>
         <div class="form-style8292">
           <div class="input-group"> <span class="input-group-addon"><i class="fa fa-pencil-square" aria-hidden="true"></i></span>
-            <input type="text" class="form-control form-control8392" placeholder="Ask any question and you be sure find your answer ?"> <span class="input-group-addon"><a href="#">Ask Now</a></span> 
+            <input type="text" class="form-control form-control8392" placeholder="Ask any question and you be sure find your answer ?"> <span class="input-group-addon"><a href="{% url 'post.create'%}">Ask Now</a></span> 
            </div>
         </div>
       </div>
@@ -42,8 +42,8 @@
     <input id="tab5" type="radio" name="tabs">
     <label for="tab5">Recent Post</label>
 	  <section id="content1">
-         <!--Recent Question Content Section -->
-         {% for post in posts %}
+     <!--Recent Question Content Section -->
+     {% for post in posts %}
       <div class="question-type2033">
         <div class="row">
           <div class="col-md-1">
@@ -77,21 +77,23 @@
       	{% endfor %}      
 	      <nav aria-label="Page navigation">
 	          <ul class="pagination">
-	            <li>
-	              <a href="#" aria-label="Previous">
-	                <span aria-hidden="true">&laquo;</span>
-	              </a>
-	            </li>
-	            <li><a href="#">1</a></li>
-	            <li><a href="#">2</a></li>
-	            <li><a href="#">3</a></li>
-	            <li><a href="#">4</a></li>
-	            <li><a href="#">5</a></li>
-	            <li>
-	              <a href="#" aria-label="Next">
-	                <span aria-hidden="true">&raquo;</span>
-	              </a>
-	            </li>
+	            <li class="page-item">
+                <a class="page-link" href="?page=1" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+              {% if posts.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page={{posts.previous_page_number}}">{{posts.previous_page_number}}</a></li>
+              {% endif %}
+              <li class="page-item"><a class="page-link" href="?page={{posts.number}}">{{posts.number}}</a></li>
+              {% if posts.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{posts.next_page_number}}">{{posts.next_page_number}}</a></li>
+              {% endif %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{posts.paginator.num_pages}}" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
 	          </ul>
 	        </nav>
 	  </section>
